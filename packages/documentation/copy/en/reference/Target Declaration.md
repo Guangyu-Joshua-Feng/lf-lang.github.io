@@ -41,7 +41,7 @@ A target specification may have optional parameters, the names and values of whi
 - [**runtime-version**](#runtime-version): Specify which version of the runtime system to use.
 - [**rust-include**](#rust-include): (Rust only) A set of Rust modules in the generated project.
 - [**single-file-project**](#single-file-project): (Rust only) If true, enables [single-file project layout](#single-file-layout).
-- [**threading**](#threading): Whether to use multiple threads.
+- [**single-threaded**](#single-threaded): Whether to use a single-threaded or multi-threaded runtime.
 - [**timeout**](#timeout): A time value (with units) specifying the logical stop time of execution. See [Termination](/docs/handbook/termination).
 - [**workers**](#workers): If using multiple threads, how many worker threads to create.
 
@@ -62,7 +62,7 @@ target C {
     logging: <error, warning, info, log, debug>,
     no-compile: <true or false>,
     protobufs: <string or list of strings>,
-    threading: <true or false>,
+    single-threaded: <true or false>,
     timeout: <time>,
     workers: <non-negative integer>,
 };
@@ -92,7 +92,7 @@ target Python {
     logging: <error, warning, info, log, debug>,
     no-compile: <true or false>,
     protobufs: <string or list of strings>,
-    threading: <true or false>,
+    single-threaded: <true or false>,
     timeout: <time>,
     workers: <non-negative integer>,
 };
@@ -658,17 +658,17 @@ If true, enables [single-file project layout](#single-file-layout).
 
 </div>
 
-## threading
+## single-threaded
 
 <div class="lf-cpp lf-ts">
 
-The $target-language$ target does not support the `threading` target option.
+The $target-language$ target does not support the `single-threaded` target option.
 
 </div>
 
 <div class="lf-c">
 
-If threading is disabled (by setting `threading` to `false`), then no thread library is used, and the `lf_schedule()` function is not thread safe. This setting is incompatible with asynchronously scheduling any physical actions and hence this parameter will be ignored for programs that have physical actions.
+If threading is disabled (by setting `single-threaded` to `true`), then no thread library is used, and the `lf_schedule()` function is not thread safe. This setting is incompatible with asynchronously scheduling any physical actions and hence this parameter will be ignored for programs that have physical actions.
 See [workers](#workers).
 
 </div>
@@ -701,7 +701,7 @@ The $target-language$ target does not support the `workers` target option.
 
 <div class="lf-c">
 
-This parameter takes a non-negative integer and specifies the number of worker threads to execute the generated program. If threading is turned on (the default, see [threading](#threading)), then the generated code will use a target platform thread library and generate multi-threaded code. This can transparently execute reactions that have no dependence on one another in parallel on multiple cores. By default, threading is turned on, and the `workers` property is set to `0`, which means that the number of workers is determined by the runtime system. Typically, it will be set to the number of cores on the machine running the code. To use a different number of worker threads, give a positive integer for this target parameter.
+This parameter takes a non-negative integer and specifies the number of worker threads to execute the generated program. If threading is turned on (the default, see [single-threaded](#single-threaded)), then the generated code will use a target platform thread library and generate multi-threaded code. This can transparently execute reactions that have no dependence on one another in parallel on multiple cores. By default, threading is turned on, and the `workers` property is set to `0`, which means that the number of workers is determined by the runtime system. Typically, it will be set to the number of cores on the machine running the code. To use a different number of worker threads, give a positive integer for this target parameter.
 
 With value `0`, the runtime engine is free to choose the number of worker threads to use. Typically, this will equal the number of hardware threads on the machine on which the Lingua Franca code generator is run.
 
@@ -752,7 +752,7 @@ The generated C program understands the following command-line arguments, each o
 
 - `-f, --fast [true | false]`: Specifies whether to wait for physical time to match logical time. The default is `false`. If this is `true`, then the program will execute as fast as possible, letting logical time advance faster than physical time.
 - `-o, --timeout <duration> <units>`: Stop execution when logical time has advanced by the specified _duration_. The units can be any of nsec, usec, msec, sec, minute, hour, day, week, or the plurals of those.
-- `-w, --workers <n>`: Executed using <n> worker threads if possible. This option is ignored in the single-threaded version. That is, it is ignored if a `threading` option was given in the target properties with value `false`.
+- `-w, --workers <n>`: Executed using <n> worker threads if possible. This option is ignored in the single-threaded version. That is, it is ignored if a `single-threaded` option was given in the target properties with value `true`.
 - `-i, --id <n>`: The ID of the federation that this reactor will join.
 
 Any other command-line arguments result in printing the above information.

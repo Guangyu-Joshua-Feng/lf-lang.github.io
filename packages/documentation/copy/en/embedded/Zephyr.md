@@ -108,7 +108,7 @@ You should now be able to build and emulate a simple Hello World! LF program:
 cd application
 west lf-build src/HelloWorld.lf -w "-t run"
 ```
-`HelloWorld.lf` sets the target property `platform: "Zephyr"` and `threading: false`. This tells `lfc` to create a Zephyr-compatible CMake project. In the example above the custom `west` command `lf-build` is used to first invoke `lfc` and then `west build` on the resulting generated sources.
+`HelloWorld.lf` sets the target property `platform: "Zephyr"` and `single-threaded: true`. This tells `lfc` to create a Zephyr-compatible CMake project. In the example above the custom `west` command `lf-build` is used to first invoke `lfc` and then `west build` on the resulting generated sources.
 
 # Nrf52 blinky
 In this example we will program a simple Blinky program onto an nrf52dk. This

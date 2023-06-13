@@ -17,7 +17,7 @@ $page-showing-target$
 
 <div class="lf-c">
 
-In the C reactor target for Lingua Franca, reactions are written in C and the code generator generates one or more standalone C programs that can be compiled and run on several platforms. It has been tested on macOS, Linux, Windows, and at least one bare-iron embedded platform. The single-threaded version (which you get by setting the [`threading` target parameter](/docs/handbook/target-declaration#threading) to `false`) is the most portable, requiring only a handful of common C libraries (see [Included Libraries](#included-libraries) below). The multithreaded version requires a small subset of the POSIX thread library (`pthreads`) and transparently executes in parallel on a multicore machine while preserving the deterministic semantics of Lingua Franca.
+In the C reactor target for Lingua Franca, reactions are written in C and the code generator generates one or more standalone C programs that can be compiled and run on several platforms. It has been tested on macOS, Linux, Windows, and at least one bare-iron embedded platform. The single-threaded version (which you get by setting the [`single-threaded` target parameter](/docs/handbook/target-declaration#single-threaded) to `true`) is the most portable, requiring only a handful of common C libraries (see [Included Libraries](#included-libraries) below). The multithreaded version requires a small subset of the POSIX thread library (`pthreads`) and transparently executes in parallel on a multicore machine while preserving the deterministic semantics of Lingua Franca.
 
 Note that C is not a safe language. There are many ways that a programmer can circumvent the semantics of Lingua Franca and introduce nondeterminism and illegal memory accesses. For example, it is easy for a programmer to mistakenly send a message that is a pointer to data on the stack. The destination reactors will very likely read invalid data. It is also easy to create memory leaks, where memory is allocated and never freed. Here, we provide some guidelines for a style for writing reactors that will be safe.
 
@@ -2940,7 +2940,7 @@ Execution proceeds as follows:
 
 ### Multithreaded Implementation
 
-The default number of worker threads is given by the `workers` argument in the [target](/docs/handbook/target-declaration#threading) statement.
+The default number of worker threads is given by the `workers` argument in the [target](/docs/handbook/target-declaration#workers) statement.
 This can be overridden with the `--workers` [command-line argument](#command-line-arguments).
 By default, the number of workers will match the number of cores on the execution platform.
 
@@ -2961,7 +2961,7 @@ Unlike the C target, the Cpp target implements more of the analysis and setup of
 
 <div class="lf-py">
 
-The Python target is built on top of the C runtime to enable maximum efficiency where possible. It uses the single-threaded C runtime by default but will switch to the multi-threaded C runtime if a physical action is detected. The [threading](/docs/handbook/target-declaration#threading) target property can be used to override this behavior.
+The Python target is built on top of the C runtime to enable maximum efficiency where possible. It uses the single-threaded C runtime by default but will switch to the multi-threaded C runtime if a physical action is detected. The [single-threaded](/docs/handbook/target-declaration#single-threaded) target property can be used to override this behavior.
 
 Running [lfc](/docs/handbook/command-line-tools) on a `XXX.lf` program that uses the Python target specification on a
 Linux machine will create the following files (other operating systems will have

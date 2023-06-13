@@ -443,7 +443,7 @@ Second, the thread uses a function `lf_sleep()`, which abstracts platform-specif
 
 The `external` function executed by the thread is defined in a reactor-level $preamble$ section. See [Preambles](/docs/handbook/preambles).
 
-**Important Note:** Asynchronous calls to `lf_schedule()` will not work if you set the [`threading` target parameter](/docs/handbook/target-declaration#threading) to `false`. You must use a threaded runtime for such asynchronous calls to work correctly.
+**Important Note:** Asynchronous calls to `lf_schedule()` will not work if you set the [`single-threaded` target parameter](/docs/handbook/target-declaration#single-threaded) to `true`. You must use a threaded runtime for such asynchronous calls to work correctly.
 
 </div>
 
